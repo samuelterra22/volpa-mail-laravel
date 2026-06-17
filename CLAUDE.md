@@ -5,7 +5,7 @@ qualquer alteração.
 
 ## O que é este pacote
 
-`samuelterra/volpa-mail-laravel` é o **SDK + Mail Transport** do Volpa Mail
+`samuelterra22/volpa-mail-laravel` é o **SDK + Mail Transport** do Volpa Mail
 para aplicações Laravel dos clientes. Ele permite que qualquer app Laravel
 envie e-mails transacionais pela API do Volpa Mail de duas formas:
 
@@ -146,7 +146,7 @@ Os testes usam `orchestra/testbench` (não precisa de app Laravel real) e
 
 ## Publicação no Packagist
 
-1. Push para `github.com/samuelterra/volpa-mail-laravel` (branch `main`).
+1. Push para `github.com/samuelterra22/volpa-mail-laravel` (branch `main`).
 2. Tag SemVer: `git tag v1.0.0 && git push --tags`.
 3. Submeter/atualizar no Packagist (webhook do GitHub mantém sincronizado).
 4. Package discovery do Laravel já registra provider + alias `VolpaMail`

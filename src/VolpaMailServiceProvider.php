@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SamuelTerra\VolpaMail;
 
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Support\Facades\Mail;
@@ -18,8 +19,10 @@ final class VolpaMailServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/volpa-mail.php', 'volpa-mail');
 
         $this->app->singleton(VolpaMailClient::class, static function (Container $app): VolpaMailClient {
+            /** @var Repository $configRepo */
+            $configRepo = $app->make('config');
             /** @var array<string, mixed> $config */
-            $config = $app['config']->get('volpa-mail');
+            $config = $configRepo->get('volpa-mail');
 
             return new VolpaMailClient(
                 http: $app->make(HttpFactory::class),

@@ -1,7 +1,7 @@
 # Volpa Mail para Laravel
 
-[![tests](https://github.com/samuelterra/volpa-mail-laravel/actions/workflows/run-tests.yml/badge.svg)](https://github.com/samuelterra/volpa-mail-laravel/actions)
-[![Packagist](https://img.shields.io/packagist/v/samuelterra/volpa-mail-laravel.svg)](https://packagist.org/packages/samuelterra/volpa-mail-laravel)
+[![tests](https://github.com/samuelterra22/volpa-mail-laravel/actions/workflows/ci.yml/badge.svg)](https://github.com/samuelterra22/volpa-mail-laravel/actions)
+[![Packagist](https://img.shields.io/packagist/v/samuelterra22/volpa-mail-laravel.svg)](https://packagist.org/packages/samuelterra22/volpa-mail-laravel)
 
 SDK e Mail Transport oficiais do **Volpa Mail** para Laravel. Envie e-mails
 transacionais pela API do Volpa Mail usando o `Mail` nativo do Laravel ou o
@@ -10,7 +10,7 @@ SDK direto.
 ## Instalação
 
 ```bash
-composer require samuelterra/volpa-mail-laravel
+composer require samuelterra22/volpa-mail-laravel
 ```
 
 Publique a config (opcional):

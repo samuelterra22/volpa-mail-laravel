@@ -1,8 +1,8 @@
 {
-    "name": "samuelterra/volpa-mail-laravel",
+    "name": "samuelterra22/volpa-mail-laravel",
     "description": "SDK e Mail Transport do Volpa Mail para Laravel — envie e-mails transacionais via API do Volpa Mail.",
     "keywords": ["volpa", "volpa-mail", "laravel", "mail", "transactional-email", "ses", "transport"],
-    "homepage": "https://github.com/samuelterra/volpa-mail-laravel",
+    "homepage": "https://github.com/samuelterra22/volpa-mail-laravel",
     "license": "MIT",
     "type": "library",
     "authors": [

@@ -12,8 +12,7 @@ final readonly class SentEmail
         public string $id,
         public EmailStatus $status,
         public ?string $createdAt = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<string, mixed>  $data

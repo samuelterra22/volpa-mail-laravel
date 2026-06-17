@@ -20,7 +20,7 @@ it('envia através do mailer volpa-mail', function () {
         '*/emails' => Http::response(['id' => 'eml_transport', 'status' => 'queued'], 202),
     ]);
 
-    Mail::to('cliente@gmail.com')->send(new WelcomeMail());
+    Mail::to('cliente@gmail.com')->send(new WelcomeMail);
 
     Http::assertSent(function ($request) {
         return str_ends_with($request->url(), '/emails')

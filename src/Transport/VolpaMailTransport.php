@@ -8,6 +8,7 @@ use SamuelTerra\VolpaMail\Client\VolpaMailClient;
 use SamuelTerra\VolpaMail\Data\SendEmailData;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
+use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\MessageConverter;
 
 final class VolpaMailTransport extends AbstractTransport
@@ -20,7 +21,9 @@ final class VolpaMailTransport extends AbstractTransport
 
     protected function doSend(SentMessage $message): void
     {
-        $email = MessageConverter::toEmail($message->getOriginalMessage());
+        /** @var Message $original */
+        $original = $message->getOriginalMessage();
+        $email = MessageConverter::toEmail($original);
 
         $sent = $this->client->emails()->send(
             SendEmailData::fromSymfonyEmail($email)

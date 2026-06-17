@@ -33,8 +33,7 @@ final readonly class SendEmailData
         public array $tags = [],
         public array $headers = [],
         public array $attachments = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Constrói o DTO a partir de um array "amigável" (uso direto no SDK).
@@ -151,7 +150,7 @@ final readonly class SendEmailData
             return [Address::fromArray($value)];
         }
 
-        return array_map(self::address(...), $value);
+        return array_values(array_map(self::address(...), $value));
     }
 
     private static function bodyToString(mixed $body): ?string

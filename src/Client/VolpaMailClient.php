@@ -20,8 +20,7 @@ final class VolpaMailClient
         private readonly string $baseUrl,
         private readonly int $timeout = 10,
         private readonly array $retry = ['times' => 2, 'sleep' => 200],
-    ) {
-    }
+    ) {}
 
     public function emails(): EmailResource
     {
@@ -52,7 +51,7 @@ final class VolpaMailClient
      */
     private function send(string $method, string $uri, array $data): array
     {
-        if ($this->apiKey === '' || $this->apiKey === null) {
+        if ($this->apiKey === '') {
             throw VolpaMailException::missingApiKey();
         }
 

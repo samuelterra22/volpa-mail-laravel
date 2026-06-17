@@ -10,8 +10,8 @@ use SamuelTerra\VolpaMail\Client\VolpaMailClient;
 
 /**
  * @method static EmailResource emails()
- * @method static array post(string $uri, array $payload)
- * @method static array get(string $uri, array $query = [])
+ * @method static array<string, mixed> post(string $uri, array<string, mixed> $payload)
+ * @method static array<string, mixed> get(string $uri, array<string, mixed> $query = [])
  *
  * @see VolpaMailClient
  */

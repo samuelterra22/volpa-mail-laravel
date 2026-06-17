@@ -11,8 +11,7 @@ final readonly class Address
     public function __construct(
         public string $email,
         public ?string $name = null,
-    ) {
-    }
+    ) {}
 
     public static function fromSymfony(SymfonyAddress $address): self
     {
@@ -23,13 +22,13 @@ final readonly class Address
     }
 
     /**
-     * @param  array{email: string, name?: string|null}  $data
+     * @param  array<array-key, mixed>  $data
      */
     public static function fromArray(array $data): self
     {
         return new self(
-            email: $data['email'],
-            name: $data['name'] ?? null,
+            email: (string) $data['email'],
+            name: isset($data['name']) ? (string) $data['name'] : null,
         );
     }
 

@@ -13,8 +13,7 @@ final readonly class Attachment
         public string $filename,
         public string $content,
         public string $contentType = 'application/octet-stream',
-    ) {
-    }
+    ) {}
 
     public static function fromPath(string $path, ?string $filename = null, ?string $contentType = null): self
     {

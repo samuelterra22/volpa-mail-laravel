@@ -12,8 +12,7 @@ final readonly class EmailResource
 {
     public function __construct(
         private VolpaMailClient $client,
-    ) {
-    }
+    ) {}
 
     /**
      * Envia um e-mail transacional.
