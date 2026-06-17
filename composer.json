@@ -1,0 +1,65 @@
+{
+    "name": "samuelterra/volpa-mail-laravel",
+    "description": "SDK e Mail Transport do Volpa Mail para Laravel — envie e-mails transacionais via API do Volpa Mail.",
+    "keywords": ["volpa", "volpa-mail", "laravel", "mail", "transactional-email", "ses", "transport"],
+    "homepage": "https://github.com/samuelterra/volpa-mail-laravel",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Samuel Terra",
+            "email": "contato@samuelterra.dev",
+            "homepage": "https://samuelterra.dev",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/contracts": "^11.0 || ^12.0",
+        "illuminate/mail": "^11.0 || ^12.0",
+        "illuminate/support": "^11.0 || ^12.0",
+        "symfony/mailer": "^7.0"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^9.0 || ^10.0",
+        "pestphp/pest": "^3.0",
+        "pestphp/pest-plugin-arch": "^3.0",
+        "pestphp/pest-plugin-laravel": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SamuelTerra\\VolpaMail\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SamuelTerra\\VolpaMail\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "test-coverage": "vendor/bin/pest --coverage",
+        "analyse": "vendor/bin/phpstan analyse",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SamuelTerra\\VolpaMail\\VolpaMailServiceProvider"
+            ],
+            "aliases": {
+                "VolpaMail": "SamuelTerra\\VolpaMail\\Facades\\VolpaMail"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
