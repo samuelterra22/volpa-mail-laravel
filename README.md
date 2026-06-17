@@ -97,6 +97,62 @@ composer analyse   # PHPStan nível 8
 composer format    # Pint
 ```
 
+## Contribuindo — Conventional Commits & releases
+
+As versões deste pacote são **automáticas**. Ao dar push em `main`, o workflow
+`CI` roda os testes; se passar, o workflow `Release` lê as mensagens de commit,
+calcula a próxima versão (SemVer) e publica a tag + GitHub Release — o que
+sincroniza o Packagist. **Você nunca cria tag à mão.**
+
+Para isso funcionar, os commits **devem** seguir o padrão
+[Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<tipo>[escopo opcional]: <descrição>
+
+[corpo opcional]
+
+[rodapé opcional]
+```
+
+### Tipos e impacto na versão
+
+| Tipo do commit | Exemplo | Efeito na versão |
+|---|---|---|
+| `feat:` | `feat: adiciona ContactResource` | **minor** (`1.2.0` → `1.3.0`) |
+| `fix:` | `fix: corrige retry em 429` | **patch** (`1.2.0` → `1.2.1`) |
+| `perf:` | `perf: reduz alocação no toArray` | **patch** |
+| `BREAKING CHANGE` | veja abaixo | **major** (`1.2.0` → `2.0.0`) |
+| `chore:` `docs:` `test:` `ci:` `style:` `refactor:` `build:` | — | **nenhum** (não gera release) |
+
+> Como o workflow usa `default_bump: false`, um push que contenha **apenas**
+> commits sem efeito (ex.: só `docs:`) **não** gera release — comportamento
+> correto de SemVer.
+
+### Mudança incompatível (major)
+
+Use `!` após o tipo **ou** um rodapé `BREAKING CHANGE:`:
+
+```
+feat!: renomeia VolpaMail::emails()->find() para ->get()
+
+BREAKING CHANGE: o método find() foi removido; use get().
+```
+
+### Exemplos
+
+```bash
+git commit -m "feat: suporte a Idempotency-Key no send()"
+git commit -m "fix(transport): propaga reply_to ao converter Symfony Email"
+git commit -m "docs: documenta consulta de status"   # não gera release
+```
+
+Antes do push, garanta o gate verde localmente:
+
+```bash
+composer test && composer analyse && composer format
+```
+
 ## Licença
 
 MIT. Veja [LICENSE.md](LICENSE.md).
