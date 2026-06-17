@@ -1,34 +1,34 @@
-# Volpa Mail para Laravel
+# Volpa Mail for Laravel
 
 [![tests](https://github.com/samuelterra22/volpa-mail-laravel/actions/workflows/ci.yml/badge.svg)](https://github.com/samuelterra22/volpa-mail-laravel/actions)
 [![Packagist](https://img.shields.io/packagist/v/samuelterra22/volpa-mail-laravel.svg)](https://packagist.org/packages/samuelterra22/volpa-mail-laravel)
 
-SDK e Mail Transport oficiais do **Volpa Mail** para Laravel. Envie e-mails
-transacionais pela API do Volpa Mail usando o `Mail` nativo do Laravel ou o
-SDK direto.
+Official **Volpa Mail** SDK and Mail Transport for Laravel. Send transactional
+emails through the Volpa Mail API using Laravel's native `Mail` or the SDK
+directly.
 
-## Instalação
+## Installation
 
 ```bash
 composer require samuelterra22/volpa-mail-laravel
 ```
 
-Publique a config (opcional):
+Publish the config (optional):
 
 ```bash
 php artisan vendor:publish --tag=volpa-mail-config
 ```
 
-Configure o `.env`:
+Configure your `.env`:
 
 ```dotenv
 VOLPA_MAIL_API_KEY=vmk_xxxxxxxxxxxxxxxx
 VOLPA_MAIL_BASE_URL=https://api.mail.volpa.com.br/v1
 ```
 
-## Uso como Mailer do Laravel
+## Using as a Laravel Mailer
 
-Adicione o mailer em `config/mail.php`:
+Add the mailer in `config/mail.php`:
 
 ```php
 'mailers' => [
@@ -38,7 +38,7 @@ Adicione o mailer em `config/mail.php`:
 ],
 ```
 
-Defina como padrão (`MAIL_MAILER=volpa-mail`) ou use sob demanda:
+Set it as the default (`MAIL_MAILER=volpa-mail`) or use it on demand:
 
 ```php
 use App\Mail\WelcomeMail;
@@ -47,10 +47,10 @@ use Illuminate\Support\Facades\Mail;
 Mail::mailer('volpa-mail')->to($user->email)->send(new WelcomeMail($user));
 ```
 
-Todos os recursos de `Mailable` (markdown, anexos, cc/bcc, reply-to)
-funcionam normalmente.
+All `Mailable` features (markdown, attachments, cc/bcc, reply-to) work as
+usual.
 
-## Uso como SDK direto
+## Using as a direct SDK
 
 ```php
 use SamuelTerra\VolpaMail\Facades\VolpaMail;
@@ -68,7 +68,7 @@ echo $sent->id;      // eml_123
 echo $sent->status->value; // queued
 ```
 
-Ou com DTO tipado:
+Or with a typed DTO:
 
 ```php
 use SamuelTerra\VolpaMail\Data\Address;
@@ -83,76 +83,76 @@ VolpaMail::emails()->send(new SendEmailData(
 ));
 ```
 
-Consultar status:
+Check status:
 
 ```php
 $email = VolpaMail::emails()->get('eml_123');
 ```
 
-## Testes
+## Tests
 
 ```bash
 composer test
-composer analyse   # PHPStan nível 8
+composer analyse   # PHPStan level 8
 composer format    # Pint
 ```
 
-## Contribuindo — Conventional Commits & releases
+## Contributing — Conventional Commits & releases
 
-As versões deste pacote são **automáticas**. Ao dar push em `main`, o workflow
-`CI` roda os testes; se passar, o workflow `Release` lê as mensagens de commit,
-calcula a próxima versão (SemVer) e publica a tag + GitHub Release — o que
-sincroniza o Packagist. **Você nunca cria tag à mão.**
+This package is versioned **automatically**. When you push to `main`, the `CI`
+workflow runs the tests; if they pass, the `Release` workflow reads the commit
+messages, computes the next version (SemVer), and publishes the tag + GitHub
+Release — which syncs Packagist. **You never create a tag by hand.**
 
-Para isso funcionar, os commits **devem** seguir o padrão
-[Conventional Commits](https://www.conventionalcommits.org/):
+For this to work, commits **must** follow the
+[Conventional Commits](https://www.conventionalcommits.org/) standard:
 
 ```
-<tipo>[escopo opcional]: <descrição>
+<type>[optional scope]: <description>
 
-[corpo opcional]
+[optional body]
 
-[rodapé opcional]
+[optional footer]
 ```
 
-### Tipos e impacto na versão
+### Types and version impact
 
-| Tipo do commit | Exemplo | Efeito na versão |
+| Commit type | Example | Version effect |
 |---|---|---|
-| `feat:` | `feat: adiciona ContactResource` | **minor** (`1.2.0` → `1.3.0`) |
-| `fix:` | `fix: corrige retry em 429` | **patch** (`1.2.0` → `1.2.1`) |
-| `perf:` | `perf: reduz alocação no toArray` | **patch** |
-| `BREAKING CHANGE` | veja abaixo | **major** (`1.2.0` → `2.0.0`) |
-| `chore:` `docs:` `test:` `ci:` `style:` `refactor:` `build:` | — | **nenhum** (não gera release) |
+| `feat:` | `feat: add ContactResource` | **minor** (`1.2.0` → `1.3.0`) |
+| `fix:` | `fix: fix retry on 429` | **patch** (`1.2.0` → `1.2.1`) |
+| `perf:` | `perf: reduce allocation in toArray` | **patch** |
+| `BREAKING CHANGE` | see below | **major** (`1.2.0` → `2.0.0`) |
+| `chore:` `docs:` `test:` `ci:` `style:` `refactor:` `build:` | — | **none** (no release) |
 
-> Como o workflow usa `default_bump: false`, um push que contenha **apenas**
-> commits sem efeito (ex.: só `docs:`) **não** gera release — comportamento
-> correto de SemVer.
+> Since the workflow uses `default_bump: false`, a push that contains **only**
+> no-effect commits (e.g. just `docs:`) does **not** generate a release —
+> correct SemVer behavior.
 
-### Mudança incompatível (major)
+### Breaking change (major)
 
-Use `!` após o tipo **ou** um rodapé `BREAKING CHANGE:`:
+Use `!` after the type **or** a `BREAKING CHANGE:` footer:
 
 ```
-feat!: renomeia VolpaMail::emails()->find() para ->get()
+feat!: rename VolpaMail::emails()->find() to ->get()
 
-BREAKING CHANGE: o método find() foi removido; use get().
+BREAKING CHANGE: the find() method was removed; use get().
 ```
 
-### Exemplos
+### Examples
 
 ```bash
-git commit -m "feat: suporte a Idempotency-Key no send()"
-git commit -m "fix(transport): propaga reply_to ao converter Symfony Email"
-git commit -m "docs: documenta consulta de status"   # não gera release
+git commit -m "feat: support Idempotency-Key on send()"
+git commit -m "fix(transport): propagate reply_to when converting Symfony Email"
+git commit -m "docs: document status lookup"   # no release
 ```
 
-Antes do push, garanta o gate verde localmente:
+Before pushing, make sure the gate is green locally:
 
 ```bash
 composer test && composer analyse && composer format
 ```
 
-## Licença
+## License
 
-MIT. Veja [LICENSE.md](LICENSE.md).
+MIT. See [LICENSE.md](LICENSE.md).

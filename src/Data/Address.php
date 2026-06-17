@@ -6,6 +6,9 @@ namespace SamuelTerra\VolpaMail\Data;
 
 use Symfony\Component\Mime\Address as SymfonyAddress;
 
+/**
+ * Email address (recipient or sender) with an optional display name.
+ */
 final readonly class Address
 {
     public function __construct(
@@ -13,6 +16,9 @@ final readonly class Address
         public ?string $name = null,
     ) {}
 
+    /**
+     * Create from a Symfony Mime address.
+     */
     public static function fromSymfony(SymfonyAddress $address): self
     {
         return new self(
@@ -22,6 +28,8 @@ final readonly class Address
     }
 
     /**
+     * Create from an array shaped like `['email' => ..., 'name' => ...]`.
+     *
      * @param  array<array-key, mixed>  $data
      */
     public static function fromArray(array $data): self
@@ -33,6 +41,8 @@ final readonly class Address
     }
 
     /**
+     * Serialize to the API payload (omits an empty `name`).
+     *
      * @return array{email: string, name?: string}
      */
     public function toArray(): array

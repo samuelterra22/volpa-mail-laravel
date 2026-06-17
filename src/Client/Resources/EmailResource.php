@@ -7,7 +7,14 @@ namespace SamuelTerra\VolpaMail\Client\Resources;
 use SamuelTerra\VolpaMail\Client\VolpaMailClient;
 use SamuelTerra\VolpaMail\Data\SendEmailData;
 use SamuelTerra\VolpaMail\Data\SentEmail;
+use SamuelTerra\VolpaMail\Exceptions\VolpaMailException;
 
+/**
+ * REST resource for transactional emails (the `/emails` endpoint).
+ *
+ * Thin layer over {@see VolpaMailClient} that turns DTOs into the API payload
+ * and responses into {@see SentEmail}. Reached via `VolpaMail::emails()`.
+ */
 final readonly class EmailResource
 {
     public function __construct(
@@ -15,9 +22,14 @@ final readonly class EmailResource
     ) {}
 
     /**
-     * Envia um e-mail transacional.
+     * Send a transactional email (`POST /emails`).
+     *
+     * Accepts a typed {@see SendEmailData} or a "friendly" array, which is
+     * converted by {@see SendEmailData::fromArray()}.
      *
      * @param  SendEmailData|array<string, mixed>  $email
+     *
+     * @throws VolpaMailException If a required field is missing or the API returns an error.
      */
     public function send(SendEmailData|array $email): SentEmail
     {
@@ -31,7 +43,11 @@ final readonly class EmailResource
     }
 
     /**
-     * Consulta o status de um e-mail pelo ID.
+     * Look up the current status of an email by ID (`GET /emails/{id}`).
+     *
+     * @param  string  $id  Identifier returned on send (e.g. `eml_123`).
+     *
+     * @throws VolpaMailException If the API returns an error.
      */
     public function get(string $id): SentEmail
     {

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace SamuelTerra\VolpaMail\Data;
 
+/**
+ * Email attachment. The content travels base64-encoded, as required by the API.
+ */
 final readonly class Attachment
 {
     /**
-     * @param  string  $content  Conteúdo já codificado em base64.
+     * @param  string  $content  Content already base64-encoded.
      */
     public function __construct(
         public string $filename,
@@ -15,6 +18,12 @@ final readonly class Attachment
         public string $contentType = 'application/octet-stream',
     ) {}
 
+    /**
+     * Create an attachment by reading a file from disk and base64-encoding it.
+     *
+     * @param  string|null  $filename  Overrides the name; defaults to the file's basename.
+     * @param  string|null  $contentType  Overrides the MIME type; defaults to the detected one.
+     */
     public static function fromPath(string $path, ?string $filename = null, ?string $contentType = null): self
     {
         return new self(

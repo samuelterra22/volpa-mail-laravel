@@ -12,8 +12,19 @@ use Illuminate\Support\ServiceProvider;
 use SamuelTerra\VolpaMail\Client\VolpaMailClient;
 use SamuelTerra\VolpaMail\Transport\VolpaMailTransport;
 
+/**
+ * Package service provider.
+ *
+ * Registers {@see VolpaMailClient} as a singleton (configured from
+ * `config/volpa-mail.php`) and publishes the config. On boot, it registers the
+ * `volpa-mail` mailer in Laravel via `Mail::extend`, wiring up the
+ * {@see VolpaMailTransport}.
+ */
 final class VolpaMailServiceProvider extends ServiceProvider
 {
+    /**
+     * Merge the default config and bind the client singleton.
+     */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/volpa-mail.php', 'volpa-mail');
@@ -34,6 +45,9 @@ final class VolpaMailServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Publish the config and register the `volpa-mail` transport on the Mail manager.
+     */
     public function boot(): void
     {
         $this->publishes([

@@ -6,6 +6,9 @@ namespace SamuelTerra\VolpaMail\Data;
 
 use SamuelTerra\VolpaMail\Enums\EmailStatus;
 
+/**
+ * Immutable result of a send/lookup — mirrors the API response.
+ */
 final readonly class SentEmail
 {
     public function __construct(
@@ -15,6 +18,8 @@ final readonly class SentEmail
     ) {}
 
     /**
+     * Create from the API response; an unknown status falls back to {@see EmailStatus::Pending}.
+     *
      * @param  array<string, mixed>  $data
      */
     public static function fromArray(array $data): self

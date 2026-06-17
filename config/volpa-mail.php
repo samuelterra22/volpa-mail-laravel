@@ -9,26 +9,26 @@ return [
     | Volpa Mail API Key
     |--------------------------------------------------------------------------
     |
-    | Chave de API do tenant no Volpa Mail. Gerada no painel Filament em
-    | Configurações > API Keys. Enviada no header "X-API-Key" de cada request.
+    | Tenant API key for Volpa Mail. Generated in the Filament panel under
+    | Settings > API Keys. Sent in the "X-API-Key" header of every request.
     |
     */
     'api_key' => env('VOLPA_MAIL_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------
-    | Base URL da API
+    | API Base URL
     |--------------------------------------------------------------------------
     |
-    | Endpoint base da API REST do Volpa Mail (sem barra final). Inclui o
-    | prefixo de versão (/v1).
+    | Base endpoint of the Volpa Mail REST API (no trailing slash). Includes
+    | the version prefix (/v1).
     |
     */
     'base_url' => env('VOLPA_MAIL_BASE_URL', 'https://api.mail.volpa.com.br/v1'),
 
     /*
     |--------------------------------------------------------------------------
-    | Timeout (segundos)
+    | Timeout (seconds)
     |--------------------------------------------------------------------------
     */
     'timeout' => (int) env('VOLPA_MAIL_TIMEOUT', 10),
@@ -38,8 +38,8 @@ return [
     | Retries
     |--------------------------------------------------------------------------
     |
-    | Número de tentativas e intervalo (ms) entre elas em caso de falha de
-    | rede ou resposta 5xx.
+    | Number of attempts and the interval (ms) between them on network
+    | failure or a 5xx response.
     |
     */
     'retry' => [

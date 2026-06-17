@@ -7,6 +7,14 @@ namespace SamuelTerra\VolpaMail\Data;
 use SamuelTerra\VolpaMail\Exceptions\VolpaMailException;
 use Symfony\Component\Mime\Email as SymfonyEmail;
 
+/**
+ * Immutable email-send DTO — mirrors the `POST /emails` request body.
+ *
+ * It can be built three ways: through the typed constructor, through
+ * {@see self::fromArray()} (direct SDK usage), or through
+ * {@see self::fromSymfonyEmail()} (used by the Transport). {@see self::toArray()}
+ * produces the final payload, omitting empty fields.
+ */
 final readonly class SendEmailData
 {
     /**
@@ -36,9 +44,11 @@ final readonly class SendEmailData
     ) {}
 
     /**
-     * Constrói o DTO a partir de um array "amigável" (uso direto no SDK).
+     * Build the DTO from a "friendly" array (direct SDK usage).
      *
      * @param  array<string, mixed>  $data
+     *
+     * @throws VolpaMailException If `from` or `to` is missing.
      */
     public static function fromArray(array $data): self
     {
@@ -71,7 +81,9 @@ final readonly class SendEmailData
     }
 
     /**
-     * Constrói o DTO a partir de uma mensagem Symfony (usado pelo Transport).
+     * Build the DTO from a Symfony message (used by the Transport).
+     *
+     * @throws VolpaMailException If the message has no sender.
      */
     public static function fromSymfonyEmail(SymfonyEmail $email): self
     {
@@ -104,6 +116,8 @@ final readonly class SendEmailData
     }
 
     /**
+     * Serialize to the API payload, dropping null and empty values.
+     *
      * @return array<string, mixed>
      */
     public function toArray(): array
@@ -126,6 +140,8 @@ final readonly class SendEmailData
     }
 
     /**
+     * Normalize a single address (a string "email" or an array) into {@see Address}.
+     *
      * @param  array<string, mixed>|string  $value
      */
     private static function address(array|string $value): Address
@@ -136,6 +152,8 @@ final readonly class SendEmailData
     }
 
     /**
+     * Normalize a list of addresses (string, single assoc array, or list) into Address objects.
+     *
      * @param  array<int, array<string, mixed>|string>|array<string, mixed>|string  $value
      * @return array<int, Address>
      */
@@ -145,7 +163,7 @@ final readonly class SendEmailData
             return [new Address($value)];
         }
 
-        // Permite passar um único endereço como array associativo.
+        // Allow passing a single address as an associative array.
         if (isset($value['email'])) {
             return [Address::fromArray($value)];
         }
@@ -153,6 +171,9 @@ final readonly class SendEmailData
         return array_values(array_map(self::address(...), $value));
     }
 
+    /**
+     * Reduce a Symfony body (string|object|null) to a string or null.
+     */
     private static function bodyToString(mixed $body): ?string
     {
         if ($body === null) {
