@@ -7,6 +7,7 @@ namespace SamuelTerra\VolpaMail\Transport;
 use SamuelTerra\VolpaMail\Client\VolpaMailClient;
 use SamuelTerra\VolpaMail\Data\SendEmailData;
 use SamuelTerra\VolpaMail\Exceptions\VolpaMailException;
+use SamuelTerra\VolpaMail\VolpaMailServiceProvider;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Component\Mime\Message;
@@ -16,7 +17,7 @@ use Symfony\Component\Mime\MessageConverter;
  * Symfony Mailer transport that delivers emails through the Volpa Mail API.
  *
  * Registered in Laravel as the `volpa-mail` mailer by the
- * {@see \SamuelTerra\VolpaMail\VolpaMailServiceProvider}, enabling the idiomatic
+ * {@see VolpaMailServiceProvider}, enabling the idiomatic
  * `Mail::mailer('volpa-mail')->send(...)`. Converts the Symfony message into a
  * {@see SendEmailData} and delegates the actual send to {@see VolpaMailClient}.
  */

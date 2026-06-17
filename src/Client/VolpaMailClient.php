@@ -8,6 +8,8 @@ use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Client\PendingRequest;
 use SamuelTerra\VolpaMail\Client\Resources\EmailResource;
 use SamuelTerra\VolpaMail\Exceptions\VolpaMailException;
+use SamuelTerra\VolpaMail\Facades\VolpaMail;
+use SamuelTerra\VolpaMail\VolpaMailServiceProvider;
 
 /**
  * Low-level HTTP client for Volpa Mail.
@@ -18,8 +20,8 @@ use SamuelTerra\VolpaMail\Exceptions\VolpaMailException;
  * that talks HTTP — Resources and the Transport depend on it, never on `Http`
  * directly.
  *
- * Registered as a singleton by the {@see \SamuelTerra\VolpaMail\VolpaMailServiceProvider}
- * and exposed through the {@see \SamuelTerra\VolpaMail\Facades\VolpaMail} facade.
+ * Registered as a singleton by the {@see VolpaMailServiceProvider}
+ * and exposed through the {@see VolpaMail} facade.
  */
 final class VolpaMailClient
 {
