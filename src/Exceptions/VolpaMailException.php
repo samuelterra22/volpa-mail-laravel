@@ -26,22 +26,47 @@ class VolpaMailException extends RuntimeException
     /** HTTP status associated with the error, when it originated from a response. */
     public ?int $status = null;
 
+    /** Machine-readable error code from the API (e.g. `sender_not_found`), when present. */
+    public ?string $errorCode = null;
+
+    /** Seconds to wait before retrying, parsed from the `Retry-After` header on 429 responses. */
+    public ?int $retryAfter = null;
+
     /**
      * Build the exception from a failed HTTP response.
      *
-     * Uses the body's `message` field when present; otherwise a generic message
-     * with the status. Populates {@see self::$status} and {@see self::$errors}.
+     * Handles both API error envelopes:
+     *  - business errors: `{"error": {"code": "...", "message": "..."}}`
+     *  - Laravel validation/throttle: `{"message": "...", "errors": {...}}`
+     *
+     * Populates {@see self::$status}, {@see self::$errors}, {@see self::$errorCode}
+     * and, for 429 responses, {@see self::$retryAfter}.
      */
     public static function fromResponse(Response $response): self
     {
         $body = $response->json();
-        $message = is_array($body) && isset($body['message'])
-            ? (string) $body['message']
-            : "Volpa Mail request failed with status {$response->status()}.";
+        $error = is_array($body) && isset($body['error']) && is_array($body['error'])
+            ? $body['error']
+            : null;
+
+        $message = match (true) {
+            is_array($body) && isset($body['message']) => (string) $body['message'],
+            $error !== null && isset($error['message']) => (string) $error['message'],
+            $error !== null && isset($error['code']) => (string) $error['code'],
+            default => "Volpa Mail request failed with status {$response->status()}.",
+        };
 
         $exception = new self($message, $response->status());
         $exception->status = $response->status();
-        $exception->errors = is_array($body) ? ($body['errors'] ?? []) : [];
+        $exception->errors = is_array($body) && isset($body['errors']) && is_array($body['errors'])
+            ? $body['errors']
+            : [];
+        $exception->errorCode = $error !== null && isset($error['code']) ? (string) $error['code'] : null;
+
+        $retryAfter = $response->header('Retry-After');
+        if ($retryAfter !== '' && ctype_digit($retryAfter)) {
+            $exception->retryAfter = (int) $retryAfter;
+        }
 
         return $exception;
     }
