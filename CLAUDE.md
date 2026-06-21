@@ -78,11 +78,17 @@ Response esperado (2xx):
 
 Retorna o mesmo shape de `SentEmail` com o `status` atual.
 
-`status` mapeia para o enum `EmailStatus`: pending, queued, sent, delivered,
-deferred, bounced, complained, failed.
+> Nota: o backend NÃO expõe `GET /emails/{id}`; o método `EmailResource::get()`
+> existe no SDK mas hoje retorna 404 no backend. Send real responde **HTTP 202**.
 
-Erros: corpo `{ "message": "...", "errors": {...} }` com HTTP 4xx/5xx →
-vira `VolpaMailException` (com `->status` e `->errors`).
+`status` mapeia para o enum `EmailStatus` (conjunto completo do backend):
+pending, queued, scheduled, processing, sent, delivered, opened, clicked,
+deferred, bounced, soft_bounced, complained, rejected, failed, canceled.
+
+Erros: o backend usa DOIS envelopes — `{ "error": { "code", "message" } }`
+(erros de negócio) e `{ "message", "errors" }` (validação Laravel/throttle).
+Ambos viram `VolpaMailException`, que expõe `->status`, `->errors`,
+`->errorCode` e `->retryAfter` (429 + `Retry-After`).
 
 ## Arquitetura do pacote
 
@@ -117,20 +123,21 @@ tests/                           # Pest + Orchestra Testbench
 
 ### Pontos de extensão / o que falta
 
-Roadmap aberto para evoluir o SDK conforme a API do backend cresce:
+> Exact backend API contract lives in `.agents/BACKEND-CONTRACT.md`.
 
-- [ ] `Resources/`: adicionar `BroadcastResource`, `ContactResource`,
-      `SuppressionResource`, `DomainResource` espelhando a API REST do backend.
-- [ ] Idempotency-Key header opcional no `send()` (evitar duplicidade em
-      retries) — sugiro `Idempotency-Key` com UUID v7.
-- [ ] Verificação de assinatura de **webhooks** (helper
-      `VolpaMail::webhooks()->verify($payload, $signature)`), já que o backend
-      emite eventos de status (delivered/bounced/...).
+- [x] `Resources/`: `SuppressionResource`, `ContactResource`,
+      `ContactListResource`, `BroadcastResource`, `WebhookResource` — all
+      implemented. `DomainResource` **intentionally omitted** (no backend
+      endpoint exists).
+- [x] Idempotency-Key header on `send()` — optional 2nd arg, UUID v7 recommended.
+- [x] Webhook signature verification — `WebhookVerifier` class; custom
+      HMAC-SHA256 scheme (`X-VolpaMail-Signature: t=<ts>,v1=<hex>`).
+- [x] Rate limit handling — HTTP 429 + `Retry-After` parsed into
+      `VolpaMailException->retryAfter`. Also exposes `->errorCode` (machine code).
+- [x] `SentEmail` DTO expanded with `from`, `to`, `subject`, `messageStream`.
 - [ ] Suporte a `template_id` com renderização local opcional (fallback).
 - [ ] Macros/eventos Laravel (`MessageSent`) carregando o `id` do Volpa Mail.
       O Transport já faz `setMessageId($sent->id)` — pode-se disparar evento.
-- [ ] Rate limit handling (HTTP 429 + `Retry-After`).
-- [ ] DTO `SentEmail` expandir com `to`, `subject`, eventos.
 
 ## Fluxo de desenvolvimento
 

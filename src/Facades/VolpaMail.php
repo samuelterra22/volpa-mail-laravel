@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace SamuelTerra\VolpaMail\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use SamuelTerra\VolpaMail\Client\Resources\BroadcastResource;
+use SamuelTerra\VolpaMail\Client\Resources\ContactListResource;
+use SamuelTerra\VolpaMail\Client\Resources\ContactResource;
 use SamuelTerra\VolpaMail\Client\Resources\EmailResource;
+use SamuelTerra\VolpaMail\Client\Resources\SuppressionResource;
+use SamuelTerra\VolpaMail\Client\Resources\WebhookResource;
 use SamuelTerra\VolpaMail\Client\VolpaMailClient;
 
 /**
@@ -15,8 +20,14 @@ use SamuelTerra\VolpaMail\Client\VolpaMailClient;
  * container. Typical usage: `VolpaMail::emails()->send([...])`.
  *
  * @method static EmailResource emails()
+ * @method static SuppressionResource suppressions()
+ * @method static ContactResource contacts()
+ * @method static ContactListResource contactLists()
+ * @method static BroadcastResource broadcasts()
+ * @method static WebhookResource webhooks()
  * @method static array<string, mixed> post(string $uri, array<string, mixed> $payload)
  * @method static array<string, mixed> get(string $uri, array<string, mixed> $query = [])
+ * @method static array<string, mixed> delete(string $uri)
  *
  * @see VolpaMailClient
  */
