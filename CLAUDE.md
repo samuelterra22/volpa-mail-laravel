@@ -45,7 +45,7 @@ Horizon, **Amazon SES** como provider de envio. Driver abstrato
 
 ## Contrato da API (consumido por este pacote)
 
-Base URL: `https://api.mail.volpa.com.br/v1` (configurável). Auth via header
+Base URL: `https://mail.volpa.com.br/v1` (configurável). Auth via header
 `X-API-Key`.
 
 ### POST /emails
