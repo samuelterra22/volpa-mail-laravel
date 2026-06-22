@@ -97,7 +97,7 @@ Add your credentials to `.env`:
 
 ```dotenv
 VOLPA_MAIL_API_KEY=your-tenant-api-key
-VOLPA_MAIL_BASE_URL=https://api.mail.volpa.com.br/v1
+VOLPA_MAIL_BASE_URL=https://mail.volpa.com.br/v1
 ```
 
 All available environment variables:
@@ -105,7 +105,7 @@ All available environment variables:
 | Env variable | Config key | Default | Description |
 |---|---|---|---|
 | `VOLPA_MAIL_API_KEY` | `api_key` | *(none — required)* | Tenant API key. Sent in the `X-API-Key` header on every request. Generated in the Volpa Mail panel under **Settings → API Keys**. |
-| `VOLPA_MAIL_BASE_URL` | `base_url` | `https://api.mail.volpa.com.br/v1` | Base endpoint of the REST API. Includes the `/v1` version prefix, no trailing slash. |
+| `VOLPA_MAIL_BASE_URL` | `base_url` | `https://mail.volpa.com.br/v1` | Base endpoint of the REST API. Includes the `/v1` version prefix, no trailing slash. |
 | `VOLPA_MAIL_TIMEOUT` | `timeout` | `10` | Per-request timeout, in seconds. |
 | `VOLPA_MAIL_RETRY_TIMES` | `retry.times` | `2` | Retry attempts on network failure or `5xx`. |
 | `VOLPA_MAIL_RETRY_SLEEP` | `retry.sleep` | `200` | Wait between retries, in milliseconds. |
@@ -515,7 +515,7 @@ The exception parses both error envelopes returned by the backend:
 | `403 Forbidden` | IP allowlist on the key, or sender not verified. | Allow your server IP / verify the sender domain in the panel. |
 | `422 Unprocessable Entity` | Validation failed (e.g. missing `subject` and `template_id`). | Inspect `$e->errors` for the offending fields. |
 | Mail silently not sent via `Mail::` | `volpa-mail` mailer not registered in `config/mail.php`. | Add the mailer block shown above. |
-| Connection timeouts | Network/firewall or low `VOLPA_MAIL_TIMEOUT`. | Raise the timeout / check egress to `api.mail.volpa.com.br`. |
+| Connection timeouts | Network/firewall or low `VOLPA_MAIL_TIMEOUT`. | Raise the timeout / check egress to `mail.volpa.com.br`. |
 
 ---
 

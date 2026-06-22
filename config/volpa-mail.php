@@ -24,7 +24,7 @@ return [
     | the version prefix (/v1).
     |
     */
-    'base_url' => env('VOLPA_MAIL_BASE_URL', 'https://api.mail.volpa.com.br/v1'),
+    'base_url' => env('VOLPA_MAIL_BASE_URL', 'https://mail.volpa.com.br/v1'),
 
     /*
     |--------------------------------------------------------------------------
