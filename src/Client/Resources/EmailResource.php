@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SamuelTerra\VolpaMail\Client\Resources;
 
 use SamuelTerra\VolpaMail\Client\VolpaMailClient;
+use SamuelTerra\VolpaMail\Data\BatchResult;
 use SamuelTerra\VolpaMail\Data\SendEmailData;
 use SamuelTerra\VolpaMail\Data\SentEmail;
 use SamuelTerra\VolpaMail\Exceptions\VolpaMailException;
@@ -61,5 +62,29 @@ final readonly class EmailResource
         $response = $this->client->get("emails/{$id}");
 
         return SentEmail::fromArray($response);
+    }
+
+    /**
+     * Send a batch of transactional emails (`POST /emails/batch`).
+     *
+     * Queues 1–500 messages atomically. Validation is all-or-nothing: if any
+     * item is invalid the entire batch is rejected with a 422 (throws
+     * {@see VolpaMailException}); there is no per-item error reporting.
+     *
+     * @param  array<int, array<string, mixed>>  $emails  1–500 email objects.
+     * @param  array<string, mixed>  $defaults  Optional top-level defaults:
+     *                                          `default_from`, `default_template`,
+     *                                          `default_tags`, `message_stream`.
+     *
+     * @throws VolpaMailException If a required field is missing or the API returns an error.
+     */
+    public function sendBatch(array $emails, array $defaults = []): BatchResult
+    {
+        $payload = ['emails' => $emails]
+            + array_filter($defaults, static fn (mixed $v): bool => $v !== null);
+
+        $response = $this->client->post('emails/batch', $payload);
+
+        return BatchResult::fromArray($response);
     }
 }

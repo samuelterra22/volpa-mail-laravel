@@ -9,7 +9,10 @@ use SamuelTerra\VolpaMail\Client\Resources\BroadcastResource;
 use SamuelTerra\VolpaMail\Client\Resources\ContactListResource;
 use SamuelTerra\VolpaMail\Client\Resources\ContactResource;
 use SamuelTerra\VolpaMail\Client\Resources\EmailResource;
+use SamuelTerra\VolpaMail\Client\Resources\LgpdResource;
+use SamuelTerra\VolpaMail\Client\Resources\MemberResource;
 use SamuelTerra\VolpaMail\Client\Resources\SuppressionResource;
+use SamuelTerra\VolpaMail\Client\Resources\ValidationResource;
 use SamuelTerra\VolpaMail\Client\Resources\WebhookResource;
 use SamuelTerra\VolpaMail\Client\VolpaMailClient;
 
@@ -25,7 +28,11 @@ use SamuelTerra\VolpaMail\Client\VolpaMailClient;
  * @method static ContactListResource contactLists()
  * @method static BroadcastResource broadcasts()
  * @method static WebhookResource webhooks()
+ * @method static ValidationResource validation()
+ * @method static LgpdResource lgpd()
+ * @method static MemberResource members()
  * @method static array<string, mixed> post(string $uri, array<string, mixed> $payload)
+ * @method static array<string, mixed> patch(string $uri, array<string, mixed> $payload)
  * @method static array<string, mixed> get(string $uri, array<string, mixed> $query = [])
  * @method static array<string, mixed> delete(string $uri)
  *

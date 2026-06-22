@@ -10,7 +10,10 @@ use SamuelTerra\VolpaMail\Client\Resources\BroadcastResource;
 use SamuelTerra\VolpaMail\Client\Resources\ContactListResource;
 use SamuelTerra\VolpaMail\Client\Resources\ContactResource;
 use SamuelTerra\VolpaMail\Client\Resources\EmailResource;
+use SamuelTerra\VolpaMail\Client\Resources\LgpdResource;
+use SamuelTerra\VolpaMail\Client\Resources\MemberResource;
 use SamuelTerra\VolpaMail\Client\Resources\SuppressionResource;
+use SamuelTerra\VolpaMail\Client\Resources\ValidationResource;
 use SamuelTerra\VolpaMail\Client\Resources\WebhookResource;
 use SamuelTerra\VolpaMail\Exceptions\VolpaMailException;
 use SamuelTerra\VolpaMail\Facades\VolpaMail;
@@ -106,6 +109,36 @@ final class VolpaMailClient
     }
 
     /**
+     * Email validation resource — single and bulk address validation.
+     *
+     * @see ValidationResource
+     */
+    public function validation(): ValidationResource
+    {
+        return new ValidationResource($this);
+    }
+
+    /**
+     * LGPD resource — data subject export and erasure.
+     *
+     * @see LgpdResource
+     */
+    public function lgpd(): LgpdResource
+    {
+        return new LgpdResource($this);
+    }
+
+    /**
+     * Tenant members resource — list, invite, update role and remove members.
+     *
+     * @see MemberResource
+     */
+    public function members(): MemberResource
+    {
+        return new MemberResource($this);
+    }
+
+    /**
      * Perform an authenticated POST and return the decoded JSON body.
      *
      * @param  array<string, mixed>  $payload
@@ -117,6 +150,20 @@ final class VolpaMailClient
     public function post(string $uri, array $payload, array $headers = []): array
     {
         return $this->send('post', $uri, $payload, $headers);
+    }
+
+    /**
+     * Perform an authenticated PATCH and return the decoded JSON body.
+     *
+     * @param  array<string, mixed>  $payload
+     * @param  array<string, string>  $headers
+     * @return array<string, mixed>
+     *
+     * @throws VolpaMailException When the API key is missing or the API responds with an error (4xx/5xx).
+     */
+    public function patch(string $uri, array $payload, array $headers = []): array
+    {
+        return $this->send('patch', $uri, $payload, $headers);
     }
 
     /**
